@@ -1,0 +1,166 @@
+:root {
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #eef4fc;
+  background: #101b2c;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 10% 0%, rgb(33 80 111 / 28%), transparent 42rem),
+    #101b2c;
+}
+
+.page-shell {
+  width: min(1120px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 76px 0 32px;
+}
+
+.page-header {
+  margin-bottom: 42px;
+}
+
+.eyebrow {
+  color: #7ed6c2;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 12px 0 10px;
+  font-size: clamp(2.6rem, 7vw, 4.5rem);
+  letter-spacing: -0.065em;
+  line-height: 1;
+}
+
+.page-header p,
+.country,
+.clock-date,
+footer {
+  color: #a7b5c8;
+}
+
+.page-header p {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.clock-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.clock-card {
+  min-height: 218px;
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid rgb(184 205 232 / 12%);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgb(29 44 64 / 96%), rgb(21 33 49 / 96%));
+  box-shadow: 0 12px 28px rgb(0 0 0 / 12%);
+}
+
+.clock-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 17px;
+}
+
+.clock-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: #7ed6c2;
+  box-shadow: 0 0 12px rgb(126 214 194 / 55%);
+}
+
+.timezone {
+  overflow: hidden;
+  color: #9dacc0;
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 0.68rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clock-card h2 {
+  margin: 17px 0 1px;
+  font-size: 1.25rem;
+  letter-spacing: -0.025em;
+}
+
+.country {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.clock-time {
+  display: block;
+  margin-top: 21px;
+  color: #f5f8fc;
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: clamp(1.7rem, 3vw, 2rem);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.07em;
+  line-height: 1;
+}
+
+.clock-date {
+  margin: 9px 0 0;
+  font-size: 0.78rem;
+}
+
+.status-message {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid rgb(255 195 119 / 26%);
+  border-radius: 10px;
+  background: rgb(255 195 119 / 8%);
+  color: #ffd9a8;
+}
+
+footer {
+  margin-top: 28px;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .clock-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .page-shell {
+    width: min(100% - 32px, 420px);
+    padding-top: 52px;
+  }
+
+  .clock-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .clock-card {
+    min-height: 200px;
+  }
+}
