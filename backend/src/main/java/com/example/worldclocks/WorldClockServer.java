@@ -19,6 +19,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * HTTP server that serves the current local times for a rotating selection of cities.
+ */
 public final class WorldClockServer {
     private static final int PORT = 8080;
     private static final int CITY_COUNT = 8;
@@ -47,9 +50,18 @@ public final class WorldClockServer {
             new City("Moscow", "Russia", "Europe/Moscow")
     );
 
+    /**
+     * Prevents instantiation of this utility class.
+     */
     private WorldClockServer() {
     }
 
+    /**
+     * Starts the world clock HTTP server and schedules periodic city selection updates.
+     *
+     * @param args command-line arguments; currently unused
+     * @throws IOException if the server cannot bind to its configured port
+     */
     public static void main(String[] args) throws IOException {
         AtomicReference<List<City>> selectedCities = new AtomicReference<>(chooseCities(null));
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -73,7 +85,13 @@ public final class WorldClockServer {
         System.out.println("World clock API is running at http://localhost:" + PORT + "/api/clocks");
     }
 
-    private static List<City> chooseCities(List<City> previousSelection) {
+    /**
+     * Randomly selects the configured number of cities, avoiding an identical consecutive selection.
+     *
+     * @param previousSelection the previously selected cities, or {@code null} for the first selection
+     * @return an immutable list of selected cities
+     */
+    static List<City> chooseCities(List<City> previousSelection) {
         List<City> shuffled = new ArrayList<>(CITIES);
         Collections.shuffle(shuffled);
         List<City> selected = new ArrayList<>(shuffled.subList(0, CITY_COUNT));
@@ -89,6 +107,13 @@ public final class WorldClockServer {
         return List.copyOf(selected);
     }
 
+    /**
+     * Validates an HTTP request and writes the clock data or an appropriate error response.
+     *
+     * @param exchange the HTTP request and response exchange
+     * @param selectedCities the current city selection
+     * @throws IOException if reading or writing the exchange fails
+     */
     private static void handleRequest(HttpExchange exchange, AtomicReference<List<City>> selectedCities)
             throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
@@ -133,7 +158,13 @@ public final class WorldClockServer {
         sendJson(exchange, 200, json.toString());
     }
 
-    private static String quote(String value) {
+    /**
+     * Escapes a string and surrounds it with quotes so it can be used as a JSON string value.
+     *
+     * @param value the string to escape
+     * @return the JSON-encoded string
+     */
+    static String quote(String value) {
         StringBuilder escaped = new StringBuilder("\"");
         for (char character : value.toCharArray()) {
             switch (character) {
@@ -169,6 +200,14 @@ public final class WorldClockServer {
         return escaped.append('"').toString();
     }
 
+    /**
+     * Writes a JSON response with the given status code and body.
+     *
+     * @param exchange the HTTP request and response exchange
+     * @param status the HTTP status code
+     * @param body the JSON response body
+     * @throws IOException if writing the response fails
+     */
     private static void sendJson(HttpExchange exchange, int status, String body) throws IOException {
         byte[] response = body.getBytes(StandardCharsets.UTF_8);
         exchange.sendResponseHeaders(status, response.length);
@@ -177,11 +216,18 @@ public final class WorldClockServer {
         }
     }
 
-    private static final class City {
+    static final class City {
         private final String name;
         private final String country;
         private final String timeZone;
 
+        /**
+         * Creates a city entry for the catalog.
+         *
+         * @param name the city name
+         * @param country the country containing the city
+         * @param timeZone the city's IANA time-zone ID
+         */
         private City(String name, String country, String timeZone) {
             this.name = name;
             this.country = country;
