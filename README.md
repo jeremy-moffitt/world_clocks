@@ -29,6 +29,28 @@ javac --add-modules jdk.httpserver -d backend/out backend/src/main/java/com/exam
 java --add-modules jdk.httpserver -cp backend/out com.example.worldclocks.WorldClockServer
 ```
 
+## Run the backend tests
+
+The backend tests use JUnit 5 and Maven. Install Maven, then run the following
+from the `world_clocks` directory.
+
+In PowerShell:
+
+```powershell
+Set-Location backend
+mvn test
+```
+
+In Git Bash:
+
+```bash
+cd backend
+mvn test
+```
+
+Maven downloads the test dependencies on the first run. Test reports are written
+to `target/surefire-reports` inside the `backend` directory.
+
 The API listens on `http://localhost:8080`. To inspect its response, open
 `http://localhost:8080/api/clocks`.
 
